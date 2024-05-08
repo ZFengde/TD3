@@ -1,6 +1,6 @@
 import diff_rl
 import os
-import time
+from datetime import datetime
 from stable_baselines3.common.env_util import make_vec_env
 
 def main(env_id,
@@ -16,9 +16,10 @@ def main(env_id,
 	env_kwargs = None
 
 	env = make_vec_env(env_id=env_id, n_envs=n_envs, env_kwargs=env_kwargs)
+	time = datetime.now().strftime("%Y_%m_%d-%H:%M")
 	# make experiment directory
-	logdir = f"{env_id}/{log_name}/logs/{int(time.time())}/"
-	modeldir = f"{env_id}/{log_name}/models/{int(time.time())}/"
+	logdir = f"{env_id}/logs/{log_name}+seed={seed}/{time}/"
+	modeldir = f"{env_id}/models/{log_name}+seed={seed}/{time}/"
 
 	if not os.path.exists(modeldir):
 		os.makedirs(modeldir)
