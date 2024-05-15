@@ -40,7 +40,7 @@ def main(env_id,
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env_id', type=str, default='Ant-v4') 
+    parser.add_argument('--env_id', type=str, default='Humanoid-v4') 
     parser.add_argument('--algo', type=str, default='TD3') 
     parser.add_argument('--n_envs', type=int, default=6)
     parser.add_argument('--iter_num', type=int, default=5) # One iter will be timestep=batch_size=1e6
