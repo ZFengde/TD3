@@ -18,8 +18,8 @@ def main(env_id,
 	env = make_vec_env(env_id=env_id, n_envs=n_envs, env_kwargs=env_kwargs)
 	time = datetime.now().strftime("%Y_%m_%d-%H:%M")
 	# make experiment directory
-	logdir = f"{env_id}/logs/{log_name}+seed={seed}/{time}/"
-	modeldir = f"{env_id}/models/{log_name}+seed={seed}/{time}/"
+	logdir = f"{env_id}/logs/{env_id}+{log_name}+seed={seed}/{time}/"
+	modeldir = f"{env_id}/models/{env_id}+{log_name}+seed={seed}/{time}/"
 
 	if not os.path.exists(modeldir):
 		os.makedirs(modeldir)
@@ -40,11 +40,11 @@ def main(env_id,
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env_id', type=str, default='Humanoid-v4') 
+    parser.add_argument('--env_id', type=str, default='Ant-v4') 
     parser.add_argument('--algo', type=str, default='TD3') 
     parser.add_argument('--n_envs', type=int, default=6)
     parser.add_argument('--iter_num', type=int, default=5) # One iter will be timestep=batch_size=1e6
-    parser.add_argument('--seed', type=int, default=3)
+    parser.add_argument('--seed', type=int, default=30)
     parser.add_argument('--learning_rate', type=int, default=1e-4)
     args = parser.parse_args()
 
