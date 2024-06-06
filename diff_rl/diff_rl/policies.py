@@ -13,7 +13,6 @@ from stable_baselines3.common.torch_layers import (
     get_actor_critic_arch,
 )
 from stable_baselines3.common.type_aliases import PyTorchObs, Schedule
-from diff_rl.common.diffusion_policy import Diffusion_Policy, Networks
 
 class Actor(BasePolicy):
 
@@ -38,14 +37,11 @@ class Actor(BasePolicy):
         self.net_arch = net_arch
         self.features_dim = features_dim
         self.activation_fn = activation_fn
-
-        action_dim = get_action_dim(self.action_space)
-        # This is for generate feature and action, TODO for marking
+        
         # here generate actor net for specifying the structure of self.mu
-        # actor_net = create_mlp(features_dim, action_dim, net_arch, activation_fn, squash_output=True)
-        # self.mu = nn.Sequential(*actor_net)
-        self.mu = Diffusion_Policy(state_feat_dim=features_dim, action_dim=action_dim, model=Networks)
-        a = 1
+        action_dim = get_action_dim(self.action_space)
+        actor_net = create_mlp(features_dim, action_dim, net_arch, activation_fn, squash_output=True)
+        self.mu = nn.Sequential(*actor_net)
 
     def _get_constructor_parameters(self):
         data = super()._get_constructor_parameters()
@@ -63,11 +59,6 @@ class Actor(BasePolicy):
     def forward(self, obs):
         features = self.extract_features(obs, self.features_extractor) # flatten
         return self.mu(features)
-    
-    def diff_loss(self, actions, obs):
-        features = self.extract_features(obs, self.features_extractor)
-        diff_loss = self.mu.loss(actions, features)
-        return diff_loss
     
     def _predict(self, observation, deterministic = False):
         action = self(observation)
