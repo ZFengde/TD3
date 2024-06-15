@@ -5,10 +5,10 @@ import pandas as pd
 
 from stable_baselines3 import PPO, TD3, DDPG
 
-env = gym.make("Ant-v4")
+env = gym.make("Hopper-v4")
 
 model = TD3("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=1000000)
+model.learn(total_timesteps=5000000)
 
 vec_env = model.get_env()
 
