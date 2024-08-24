@@ -33,7 +33,7 @@ class TD3(OffPolicyAlgorithm):
         policy: Union[str, Type[TD3Policy]],
         env: Union[GymEnv, str],
         learning_rate: Union[float, Schedule] = 3e-4,
-        buffer_size: int = 200000,  # 1e6
+        buffer_size: int = 1000000,  # 1e6
         learning_starts: int = 100,
         batch_size: int = 256,
         tau: float = 0.005,
@@ -131,7 +131,7 @@ class TD3(OffPolicyAlgorithm):
             current_q_values = self.critic(replay_data.observations, replay_data.actions)
 
             # Compute critic loss
-            critic_loss = sum(F.mse_loss(current_q, target_q_values) for current_q in current_q_values)
+            critic_loss = sum(F.mse_loss(current_q, target_q_values) for current_q in current_q_values) # sum two loss from two critic, update them all
             assert isinstance(critic_loss, th.Tensor)
             critic_losses.append(critic_loss.item())
 
